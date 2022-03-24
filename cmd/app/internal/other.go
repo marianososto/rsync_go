@@ -5,20 +5,13 @@ import (
 	"math"
 )
 
-const mod = 1 << 16
+func findDeltas(input []byte, blockSize int64, blockSignatures []BlockSignature) {
+	inputLen := int64(len(input))
 
-func rollingHash(block []byte) (r1 uint32, r2 uint32, r uint32) {
-	var a, b uint32
-	l := uint32(len(block))
-	for i := uint32(0); i < l; i++ {
-		a += uint32(block[i])
-		b += (l - i + 1) * uint32(block[i])
+	for i := int64(0); (i + blockSize) < inputLen; i++ {
+		currentBlock := input[i : i+blockSize]
 
 	}
-	r1 = a % mod
-	r2 = b % mod
-	r = r1 + mod*r2
-	return r1, r2, r
 }
 
 type BlockSignature struct {
@@ -52,7 +45,7 @@ func processDestinationFile(input []byte) []BlockSignature {
 	}
 
 	if inputLen-((numberOfBlocks-1)*blockSize) > 0 {
-		start := numberOfBlocks * blockSize
+		start := (numberOfBlocks - 1) * blockSize
 		block := input[start:]
 		_, _, weakHash := rollingHash(block)
 		strongHash := crypto.MD5.New().Sum(block)
