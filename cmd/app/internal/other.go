@@ -6,11 +6,18 @@ import (
 )
 
 func findDeltas(input []byte, blockSize int64, blockSignatures []BlockSignature) {
+	weakHashToBlockIndex := make(map[string]int64)
+	strongHashToBlockIndex := make(map[string]int64)
+
 	inputLen := int64(len(input))
+	a, b, s := firstRollingHash(input)
 
-	for i := int64(0); (i + blockSize) < inputLen; i++ {
+	//search s in weakhash, if its found,then calculate md5 hash and check if it matches
+
+	for i := int64(1); (i + blockSize) < inputLen; i++ {
 		currentBlock := input[i : i+blockSize]
-
+		//search s in weakhash, if its found,then calculate md5 hash and check if it matches
+		// if it matches, then store the start-end index of the block to be reused
 	}
 }
 
